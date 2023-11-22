@@ -1,0 +1,42 @@
+{% extends "disciplinetracking/base.html" %}
+{% block content %}
+ <!-- {% if object_list %}
+{% for violation in object_list %}
+    <div class="card">
+      <a class="btn btn-info" href="{% url 'disciplinetracking-update' violation.id %}">Edit</a>
+      <a class="btn btn-danger" href="{% url 'delete-violation' violation.id %}">Delete</a>
+    <img class="card-img-top" src="{{ violation.pictures }}" alt="Violation Picture">
+    <div class="card-body">
+      <h5 class="card-title">{{ violation.date_posted|date }} </h5>
+        
+        <p class="text-muted">created by {{ violation.created_by }}</p>
+      <p class="card-text">{{ violation.narrative_report }}</p>
+      
+    </div>
+  </div>
+  <hr>
+  
+  {% endfor %}
+  {% else %}
+  <h2>No data</h2>
+  {% endif %} -->
+  <div class="card">
+    <div class="card-header">
+      <p style="text-transform:capitalize;">{{ student.name }} - {{ student.lrn }}</p>
+      <a class="btn btn-primary" href="{% url 'disciplinetracking-add-violation' student.id %}">Add</a>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Violations</h5>
+      {% for violation in violations %}
+        <div class="violation-container" style="border: 2px solid grey;padding: 10px;margin-bottom:10px;">
+          <a href="{% url 'disciplinetracking-update-violation' violation.id %}">Edit</a>
+          <a href="{% url 'delete-violation' violation.id %}">Delete</a>
+          <p>{{ violation.narrative_report }} - {{ violation.school_year }} </p>
+          <p>{{ violation.date_posted }} created by: {{ violation.created_by }} </p>
+          <img src="{{ violation.pictures.url }}" alt="Violation Image" style="width:15%;">
+          
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

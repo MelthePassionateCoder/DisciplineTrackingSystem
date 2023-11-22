@@ -1,0 +1,11 @@
+{% extends "disciplinetracking/base.html" %}
+{% block content %}
+<h2>Delete Violation <i>"{{ violation.narrative_report }}"</i></h2>
+    <p>Are you sure you want to delete this violation?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" >Delete</button>
+        <a class="btn btn-primary" href="{% url 'disciplinetracking-list' object.student.id %}">Cancel</a>
+    </form>
+    
+{% endblock %}
