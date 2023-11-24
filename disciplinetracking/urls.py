@@ -8,7 +8,8 @@ from .views import (PostListView,
                     PostUpdateView,
                     PostUpdateViolationView,
                     DeleteViolationView,
-                    DeleteStudentView)
+                    DeleteStudentView,
+                    download_pdf)
 urlpatterns = [
     # path('add-violation/',add_violation, name='add_violation'),
     # Add other URLs as needed
@@ -21,4 +22,5 @@ urlpatterns = [
     path('student/<int:pk>/update',PostUpdateViolationView.as_view(),name='disciplinetracking-update-violation'),
     path('student_violations/<int:pk>/delete/', DeleteViolationView.as_view(), name='delete-violation'),
     path('student/<int:pk>/delete/', DeleteStudentView.as_view(), name='delete-student'),
+    path('download_pdf/<int:pk>/', download_pdf, name='download_pdf'),
 ]

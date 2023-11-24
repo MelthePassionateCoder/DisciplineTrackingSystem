@@ -6,7 +6,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
 # def add_violation(request):
 #     if request.method == 'POST':
 #         form = ViolationForm(request.POST, request.FILES)
@@ -29,6 +33,25 @@ from django.contrib.messages.views import SuccessMessageMixin
 #         form = ViolationForm()
 
 #     return render(request, 'create_view.html', {'form': form})
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+def download_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    violations = Violation.objects.filter(student=student)
+    context = {'student': student, 'violations': violations}
+    pdf = render_to_pdf('disciplinetracking/pdf_template.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="student_violations.pdf"'
+        return response
+    return HttpResponse("Error generating PDF", status=500)
 
 class PostListView(LoginRequiredMixin,ListView):
 	model = Student

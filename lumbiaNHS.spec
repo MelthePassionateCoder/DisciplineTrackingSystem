@@ -1,0 +1,30 @@
+block_cipher = None
+
+a = Analysis(['D:\Coding\Django\lumbiaNHS_2\manage.py'],
+             pathex=['D:\Coding\Django\lumbiaNHS_2'],
+             binaries=[],
+             datas=[('db.sqlite3', '.')],
+             hiddenimports=['disciplinetracking.apps','users.apps'],
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=[],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher,
+             noarchive=False)
+pyz = PYZ(a.pure, a.zipped_data,
+             cipher=block_cipher)
+exe = EXE(pyz,
+          a.scripts,
+          a.binaries,
+          a.zipfiles,
+          a.datas,
+          [],
+          name='manage',
+          debug=False,
+          bootloader_ignore_signals=False,
+          bootloader_includes_py=None,
+          bootloader_ignore_libraries=[],
+          onefile=True,
+          console=True,
+          distpath='dist')

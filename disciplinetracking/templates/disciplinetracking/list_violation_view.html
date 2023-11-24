@@ -24,19 +24,37 @@
     <div class="card-header">
       <p style="text-transform:capitalize;">{{ student.name }} - {{ student.lrn }}</p>
       <a class="btn btn-primary" href="{% url 'disciplinetracking-add-violation' student.id %}">Add</a>
+      <a class="btn btn-info" href="{% url 'download_pdf' student.id %}">Download PDF</a>
     </div>
+  </div>
+    
     <div class="card-body">
-      <h5 class="card-title">Violations</h5>
+      <h5 class="">Violations</h5>
       {% for violation in violations %}
-        <div class="violation-container" style="border: 2px solid grey;padding: 10px;margin-bottom:10px;">
+      <div class="card-header">
+        {{ violation.school_year }} | {{ violation.date_posted }} created by: {{ violation.created_by }}
+      </div>
+        <div class="card-body">
           <a href="{% url 'disciplinetracking-update-violation' violation.id %}">Edit</a>
           <a href="{% url 'delete-violation' violation.id %}">Delete</a>
-          <p>{{ violation.narrative_report }} - {{ violation.school_year }} </p>
-          <p>{{ violation.date_posted }} created by: {{ violation.created_by }} </p>
-          <img src="{{ violation.pictures.url }}" alt="Violation Image" style="width:15%;">
-          
+          <h6 class="card-title">Narrative Report</h6>
+          <p class="card-text">{{ violation.narrative_report }} </p>
+           
+        </div>
+        <div class="card-body">
+          <h6 class="card-title">Intervention</h6>
+          <p class="card-text">Action Taken: <i>{{ violation.action_taken }}</i></p>
+            {% if violation.intervention_date %}
+            <p class="card-text">Recommendation: <i>{{ violation.recommendation }}</i> </p>
+            <p class="card-text">Date: {{ violation.intervention_date }}</p>
+            {% endif %}
+            {% if violation.pictures %}
+            <img src="{{ violation.pictures.url }}" alt="Violation Image" style="width:15%;">
+            {% else %}
+            <p></p>
+            {% endif %}
         </div>
       {% endfor %}
     </div>
-  </div>
+  
 {% endblock %}

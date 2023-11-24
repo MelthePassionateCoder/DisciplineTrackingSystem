@@ -22,11 +22,13 @@ class StudentRegisterForm(forms.ModelForm):
 class ViolationForm(forms.ModelForm):
     class Meta:
         model = Violation
-        fields = ['narrative_report','school_year', 'pictures', 'date_posted']
+        fields = ['narrative_report','school_year', 'pictures', 'date_posted','intervention_date', 'action_taken', 'recommendation']
 
         widgets = {
             "date_posted": DateTimePickerInput(),
+            "intervention_date": DateTimePickerInput(),
         }
+    
 
     # def get_absolute_url(self):
     #     return reverse('disciplinetracking-list', kwargs={'pk':self.pk})

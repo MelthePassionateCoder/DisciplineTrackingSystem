@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/jquery-3.3.1.min.js">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+          <p style="text-transform:capitalize;">{{ student.name }} - {{ student.lrn }}</p>
+        </div>
+    </div>
+        <h5 class="">Violations</h5>
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+          {% for violation in violations %}
+          <div class="card-header">
+            {{ violation.school_year }} | {{ violation.date_posted }} created by: {{ violation.created_by }}
+          </div>
+            <div class="card-body">
+              <h6 class="card-title">Narrative Report</h6>
+              <p class="card-text">{{ violation.narrative_report }} </p>
+               
+            </div>
+            <div class="card-body">
+              <h6 class="card-title">Intervention</h6>
+              <p class="card-text">Action Taken: <i>{{ violation.action_taken }}</i></p>
+                {% if violation.intervention_date %}
+                <p class="card-text">Recommendation: <i>{{ violation.recommendation }}</i> </p>
+                <p class="card-text">Date: {{ violation.intervention_date }}</p>
+                {% endif %}
+                {% if violation.pictures %}
+                <img src="{{ violation.pictures.url }}" alt="Violation Image" style="width:15%;">
+                {% else %}
+                <p></p>
+                {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      
+    
+      
+</body>
+</html>
