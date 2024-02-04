@@ -1,0 +1,49 @@
+{% extends 'disciplinetracking/base.html' %}
+{% block content %}
+<form method="get" action="{% url 'offense_summary' %}">
+    <label for="school_year">Select School Year:</label>
+    <select name="school_year" id="school_year">
+        <option value="" {% if not selected_year %}selected{% endif %}>All</option>
+        {% for year in school_years %}
+            <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
+{% if selected_year == None %}
+<p>Please select school year</p>
+{% else %}
+{% if selected_year != "" %}
+<h2>Offense Summary Report for {{ selected_year }}</h2>
+{% else %}
+<h2>Offense Summary Report</h2>
+{% endif %}
+{{ school_year }}
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            {% if selected_year == "" %}
+            <td>School Year</td>
+            {% endif %}
+            <th>Offense Type</th>
+            <th>Count</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for offense in summaries %}
+            <tr>
+                {% if selected_year != "" %}
+                <td>{{ offense.offense_type }}</td>
+                <td>{{ offense.count }}</td>
+                {% else %}
+                <td>{{ offense.school_year }}</td>
+                <td>{{ offense.offense_type }}</td>
+                <td>{{ offense.count }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

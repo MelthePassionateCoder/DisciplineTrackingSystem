@@ -2,6 +2,8 @@ from django import forms
 from .models import Violation, Student
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput, DatePickerInput
 from django.urls import reverse
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
 
 class StudentRegisterForm(forms.ModelForm):
     class Meta:
@@ -22,7 +24,7 @@ class StudentRegisterForm(forms.ModelForm):
 class ViolationForm(forms.ModelForm):
     class Meta:
         model = Violation
-        fields = ['narrative_report','school_year', 'pictures', 'date_posted','intervention_date', 'action_taken', 'recommendation']
+        fields = ['school_year','date_committed','selected_offense','custom_description','narrative_report', 'pictures','action_taken', 'intervention_date', 'recommendation']
 
         widgets = {
             "date_posted": DateTimePickerInput(),
@@ -36,4 +38,6 @@ class ViolationForm(forms.ModelForm):
     #     super().__init__(*args, **kwargs)
     #     self.fields['created_by'].widget = forms.HiddenInput()
 
-    
+class ChangePasswordForm(PasswordChangeForm):
+    class Meta:
+        model = User

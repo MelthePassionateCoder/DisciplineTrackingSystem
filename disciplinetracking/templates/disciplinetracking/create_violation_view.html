@@ -1,17 +1,46 @@
 {% extends "disciplinetracking/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<div class="content-section">
-		<form enctype= multipart/form-data method="POST">
-			{% csrf_token %}
-			<fieldset class="form-group">
-				<legend class="border-bottom mb-4"></legend>
-			{{ form|crispy }}
-			{{ form.media }}
-			</fieldset>
-			<div class="form-group">
-				<button class="btn btn-outline-info" type="submit">Submit</button>
-			</div>
-		</form>
-	</div>
+    <div class="content-section">
+        <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4"></legend>
+				{{ form.selected_offense|as_crispy_field }}
+				<div class="form-group" id="customDescriptionField">
+					{{ form.custom_description|as_crispy_field }}
+				</div>
+				
+				{{ form.school_year|as_crispy_field }}
+				{{ form.date_committed|as_crispy_field }}
+				{{ form.narrative_report|as_crispy_field }}
+				{{ form.pictures|as_crispy_field }}
+				{{ form.action_taken|as_crispy_field }}
+				{{ form.intervention_date|as_crispy_field }}
+				{{ form.recommendation|as_crispy_field }}
+                {{ form.media }}
+                
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_selected_offense').change(function() {
+                var selectedOffense = $(this).val();
+                if (selectedOffense == 'Others') {
+                    $('#customDescriptionField').show();
+                } else {
+                    $('#customDescriptionField').hide();
+                }
+            });
+
+            // Trigger the change event on page load to handle pre-filled forms
+            $('#id_selected_offense').trigger('change');
+        });
+    </script>
 {% endblock content %}

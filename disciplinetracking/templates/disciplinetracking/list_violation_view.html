@@ -1,53 +1,54 @@
 {% extends "disciplinetracking/base.html" %}
 {% block content %}
- <!-- {% if object_list %}
-{% for violation in object_list %}
-    <div class="card">
-      <a class="btn btn-info" href="{% url 'disciplinetracking-update' violation.id %}">Edit</a>
-      <a class="btn btn-danger" href="{% url 'delete-violation' violation.id %}">Delete</a>
-    <img class="card-img-top" src="{{ violation.pictures }}" alt="Violation Picture">
-    <div class="card-body">
-      <h5 class="card-title">{{ violation.date_posted|date }} </h5>
-        
-        <p class="text-muted">created by {{ violation.created_by }}</p>
-      <p class="card-text">{{ violation.narrative_report }}</p>
-      
-    </div>
-  </div>
-  <hr>
-  
-  {% endfor %}
-  {% else %}
-  <h2>No data</h2>
-  {% endif %} -->
-  <div class="card">
+  <div class="card" id="card">
     <div class="card-header">
       <p style="text-transform:capitalize;">{{ student.name }} - {{ student.lrn }}</p>
-      <a class="btn btn-primary" href="{% url 'disciplinetracking-add-violation' student.id %}">Add</a>
+      {% if user.is_authenticated %} <a class="btn btn-primary" href="{% url 'disciplinetracking-add-violation' student.id %}">Add</a> {% endif %}
       <a class="btn btn-info" href="{% url 'download_pdf' student.id %}">Download PDF</a>
     </div>
-  </div>
+  
     
     <div class="card-body">
       <h5 class="">Violations</h5>
       {% for violation in violations %}
       <div class="card-header">
-        {{ violation.school_year }} | {{ violation.date_posted }} created by: {{ violation.created_by }}
+        SY{{ violation.school_year }} | {{ violation.date_posted }} 
+        {% if user.is_authenticated %}
+        created by: {{ violation.created_by }}
+        {% endif %}
       </div>
         <div class="card-body">
+          {% if user.is_authenticated %}
           <a href="{% url 'disciplinetracking-update-violation' violation.id %}">Edit</a>
           <a href="{% url 'delete-violation' violation.id %}">Delete</a>
+          {% endif %}
           <h6 class="card-title">Narrative Report</h6>
-          <p class="card-text">{{ violation.narrative_report }} </p>
-           
+          <p class="card-text"><span class="text-muted"><i id="violation-offense">
+            {% if violation.violation_number == 1 %}
+           {{ violation.violation_number }}st Offense
+            {% elif violation.violation_number == 2 %}
+            {{ violation.violation_number }}nd Offense
+            {% elif violation.violation_number == 3 %}
+            {{ violation.violation_number }}rd Offense
+            {% else %}
+            {{ violation.violation_number }}th Offense
+            {% endif %}</i></span>
+            : 
+            {% if violation.selected_offense == 'Others' %}
+            {{ violation.custom_description }}
+            {% else %}
+            {{ violation.get_selected_offense_display }}
+            {% endif %}
+             </p>
+             <p class="card-text">Narrative Report: <i>{{ violation.narrative_report }}</i></p>
         </div>
         <div class="card-body">
           <h6 class="card-title">Intervention</h6>
           <p class="card-text">Action Taken: <i>{{ violation.action_taken }}</i></p>
-            {% if violation.intervention_date %}
+           
             <p class="card-text">Recommendation: <i>{{ violation.recommendation }}</i> </p>
             <p class="card-text">Date: {{ violation.intervention_date }}</p>
-            {% endif %}
+          
             {% if violation.pictures %}
             <img src="{{ violation.pictures.url }}" alt="Violation Image" style="width:15%;">
             {% else %}
@@ -55,6 +56,7 @@
             {% endif %}
         </div>
       {% endfor %}
-    </div>
+    </div></div>
   
+
 {% endblock %}
